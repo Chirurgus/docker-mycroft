@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM arm32v7/debian:10.7-slim
 
 ENV TERM linux
 ENV DEBIAN_FRONTEND noninteractive
@@ -14,7 +14,7 @@ RUN set -x \
 	&& cd /opt/mycroft \
 	&& mkdir /opt/mycroft/skills \
 	# git fetch && git checkout dev && \ this branch is now merged to master
-	&& CI=true /opt/mycroft/./dev_setup.sh --allow-root -sm \
+	&& CI=true /opt/mycroft/./dev_setup.sh --allow-root \
 	&& mkdir /opt/mycroft/scripts/logs \
 	&& touch /opt/mycroft/scripts/logs/mycroft-bus.log \
 	&& touch /opt/mycroft/scripts/logs/mycroft-voice.log \
@@ -22,17 +22,20 @@ RUN set -x \
 	&& touch /opt/mycroft/scripts/logs/mycroft-audio.log \
 	&& apt-get -y autoremove \
 	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN curl https://forslund.github.io/mycroft-desktop-repo/mycroft-desktop.gpg.key | apt-key add - 2> /dev/null && \
-    echo "deb http://forslund.github.io/mycroft-desktop-repo bionic main" > /etc/apt/sources.list.d/mycroft-desktop.list
-RUN apt-get update && apt-get install -y mimic
+	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+	&& rm -rf /opt/mycroft/.git /opt/mycroft/.github /opt/mycroft/doc /opt/mycroft/test \
+	&& mv /opt/mycroft/mimic /opt/mycroft/mimic.bak \
+	&& mkdir /opt/mycroft/mimic \
+	&& mv /opt/mycroft/mimic.bak/bin /opt/mycroft/mimic/ \
+	&& mv /opt/mycroft/mimic.bak/lib /opt/mycroft/mimic/ \
+	&& mv /opt/mycroft/mimic.bak/voices /opt/mycroft/mimic/ \
+	&& rm -rf /opt/mycroft/mimic.bak
 
 # Set the locale
-RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+RUN locale-gen en_EI.UTF-8
+ENV LANG en_EI.UTF-8
+ENV LANGUAGE en_EI:en
+ENV LC_ALL en_EI.UTF-8
 
 WORKDIR /opt/mycroft
 COPY startup.sh /opt/mycroft
