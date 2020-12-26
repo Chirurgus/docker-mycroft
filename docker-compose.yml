@@ -1,0 +1,14 @@
+version: "3.3"  # optional since v1.27.0
+services:
+    mycroft:
+        build: .
+        #restart: always
+        ports:
+            - "8181:8181"
+        volumes:
+            - ./config:/root/.mycroft
+            - ./skills:/opt/mycroft/skills
+            - ${XDG_RUNTIME_DIR}/pulse/native:${XDG_RUNTIME_DIR}/pulse/native
+            - ~/.config/pulse/cookie:/root/.config/pulse/cookie
+        environment: 
+            - PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
