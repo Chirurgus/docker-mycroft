@@ -12,3 +12,5 @@ services:
             - ~/.config/pulse/cookie:/root/.config/pulse/cookie
         environment: 
             - PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
+        devices:
+            - /dev/snd
