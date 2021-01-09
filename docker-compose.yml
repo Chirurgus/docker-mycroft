@@ -2,7 +2,7 @@ version: "3.3"  # optional since v1.27.0
 services:
     mycroft:
         build: .
-        #restart: always
+        restart: always
         ports:
             - "8181:8181"
         volumes:

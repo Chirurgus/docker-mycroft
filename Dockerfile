@@ -12,7 +12,7 @@ RUN set -x \
 	# Checkout Mycroft
 	&& git clone https://github.com/MycroftAI/mycroft-core.git /opt/mycroft \
 	&& cd /opt/mycroft \
-	&& mkdir /opt/mycroft/skills \
+	&& mkdir /opt/mycroft/skills /root/.mycroft \
 	# git fetch && git checkout dev && \ this branch is now merged to master
 	&& CI=true /opt/mycroft/./dev_setup.sh --allow-root \
 	&& mkdir /opt/mycroft/scripts/logs \
@@ -32,10 +32,10 @@ RUN set -x \
 	&& rm -rf /opt/mycroft/mimic.bak
 
 # Set the locale
-RUN locale-gen en_EI.UTF-8
-ENV LANG en_EI.UTF-8
-ENV LANGUAGE en_EI:en
-ENV LC_ALL en_EI.UTF-8
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 WORKDIR /opt/mycroft
 COPY startup.sh /opt/mycroft
